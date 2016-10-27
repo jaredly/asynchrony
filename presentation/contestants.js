@@ -30,17 +30,15 @@ import {SubTitle, BigTitle, Title} from './shared'
 
 export default [
   <Slide >
-    <BigTitle>Introducing the contestants</BigTitle>
+    <BigTitle>What are these things?</BigTitle>
   </Slide>,
 
   <Slide>
     <Title>Callbacks</Title>
-    <Appear>
     <List>
       <ListItem>called with <Code>(err or null, result)</Code></ListItem>
       <ListItem>only called once</ListItem>
     </List>
-    </Appear>
   </Slide>,
 
   <Slide>
@@ -69,13 +67,11 @@ export default [
     - this is better in chrome now, but nodejs still suffers :/
 `}>
     <Title>Promises</Title>
-    <Appear>
     <List>
       <ListItem>Caches the result / error</ListItem>
       <ListItem>Collapses returned promises</ListItem>
       <ListItem>Eats errors for lunch</ListItem>
     </List>
-    </Appear>
   </Slide>,
 
   <Slide>
@@ -96,14 +92,11 @@ export default [
   <Slide notes={`
 `}>
     <Title>Async/Await</Title>
-    <Appear>
     <List>
       <ListItem>More ergonomic</ListItem>
       <ListItem>Less nesting required</ListItem>
-      <ListItem>{'Calling an async fn returns a promise'}</ListItem>
       <ListItem>Now in Chrome Beta!</ListItem>
     </List>
-    </Appear>
   </Slide>,
 
   <Slide notes={`
@@ -116,7 +109,7 @@ export default [
   const text = await readFileAsPromised("someFile.txt")
   const html = await getWebSiteAsPromised("http://google.com")
   console.log(text, html)
-)()
+})()
   // gotta handle errors or they disappear into the abyss
   .catch(err => console.error('bad news'))
 `} />
@@ -124,13 +117,11 @@ export default [
 
   <Slide notes={` `}>
     <Title>Observables</Title>
-    <Appear>
     <List>
       <ListItem>A stream of values</ListItem>
       <ListItem>Lots of built-in operators</ListItem>
       <ListItem>Operations work over stream as a whole</ListItem>
     </List>
-    </Appear>
   </Slide>,
 
   <Slide>
@@ -143,9 +134,9 @@ taskDataObs
   .switchMap(taskData -> {
     return problemInfoObs.take(1)
       .switchMap(initialInfo -> {
-        const firstCommand = buildFirstCommand(initialInfo)
-        return problemInfoObs
-          .skip(1)
+        const firstCommand =
+              buildFirstCommand(taskData, initialInfo)
+        return problemInfoObs.skip(1)
           .switchMap(problemInfo ->
               buildLoadNextProblemCommand(problemInfo))
           .startWith(firstCommand)
@@ -156,13 +147,11 @@ taskDataObs
 
   <Slide notes={` `}>
     <Title fit>Communicating Sequential Processes</Title>
-    <Appear>
     <List>
       <ListItem>Passing data between ~threads</ListItem>
       <ListItem>Take & Put *blocking* the current thread</ListItem>
       <ListItem>Handle each value individually</ListItem>
     </List>
-    </Appear>
   </Slide>,
 
   <Slide>

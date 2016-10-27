@@ -26,15 +26,15 @@ import {
   TableItem,
 } from "spectacle";
 
-import {Title} from './shared'
+import {Title, SubTitle} from './shared'
 
 const replacements = {
   'y': '✅',
   'n': '🚫',
   'n~': '⚠️',
   'y~': '⚠️',
-  '+': '😀',
-  '-': '😕',
+  '+': '✔',
+  '~': '😕',
 }
 
 const replace = text => {
@@ -48,7 +48,7 @@ const replace = text => {
 const featureTable = {
   "Feature": ["Callbacks", "Promises", "Observables", "CSP"],
   "Num values": ["1~", "1", "*", "*"],
-  "Num sources": ["*", "1", "*", "*"],
+  "Num sources": ["1", "1", "*", "*"],
   "Num destinations": ['1~', '*', '*', '1~'],
     // you can set up event listeners, which multiplex
     // but observables are essentially event listeners gone wild
@@ -56,7 +56,7 @@ const featureTable = {
     // callbacks -> node convention, error first; it's great, and it's pretty well followed now
     // CSP -> in javascript, you can convention `instanceof Error`, and in typed language you
     // can just wrap the data in a `Result`, which is fine
-  'Caching': ['n', 'y', 'n~', 'n~'],
+  'Caching': ['n', 'y', 'n~', 'n'],
     // default is no caching, you can use BehaviorSubject etc to cache
     // you can, but it's infrequent
 }
@@ -84,7 +84,7 @@ const tableNotes = () => "TODO implement tableNotes"
 
 const interopTable = {
   // from
-  "":                 ["Callbacks", "Promises (a/a)", "Observables", "CSP"],
+  "":                 ["Callbacks", "Promises", "Observables", "CSP"],
   // to
   'Callbacks':        ['',          '~',              '+',           '+'],
   // for CSP, gotta write a function that says "just give me one"
@@ -240,7 +240,7 @@ function obs2csp(obs, chan) {
 }
 
 // " // '
-const makeTable = (data) => (
+const makeTable = (data, appear) => (
   <Table>
     <tbody>
       <TableRow >
@@ -256,33 +256,32 @@ const makeTable = (data) => (
           <strong>{item}</strong>
         </TableItem>)}
       </TableRow>
-      {Object.keys(data).slice(1).map(rowTitle => (
-          <Appear key={rowTitle}>
-          <TableRow>
+      {Object.keys(data).slice(1).map(rowTitle => {
+        const contents = <TableRow>
             <TableItem style={{height: 80}} textAlign="left">
               <Text bold style={{whiteSpace: 'nowrap'}}>{rowTitle}</Text>
             </TableItem>
             {data[rowTitle].map(item => <TableItem>{replace(item)}</TableItem>)}
           </TableRow>
-          </Appear>
-      ))}
+        return appear ?
+          <Appear key={rowTitle}>
+            {contents}
+          </Appear> : contents
+      })}
     </tbody>
   </Table>
 )
 
 const titleSlide = ({ka, jared}) => (
   <Slide bgColor="primary">
-    <Heading size={1} lineHeight={1} textColor="black">
-      Paradigms
+    <Heading size={2} lineHeight={1} textColor="black">
+      Paradigms for
     </Heading>
-    <Heading size={1} lineHeight={1} textColor="black">
-      for Dealing with
-    </Heading>
-    <Heading size={1} lineHeight={1} textColor="black" margin="0 0 30px">
-      Asynchrony
+    <Heading size={2} lineHeight={1} textColor="black" margin="0 0 30px">
+      Dealing with Asynchrony
     </Heading>
     <Text bold size={4} textFont="primary" textColor="white">
-      Observables, Promises
+      Observables, Promises,
     </Text>
     <Text bold size={4} textFont="primary" textColor="white" margin="0 0 20px">
       core.async, and callbacks!
@@ -313,14 +312,14 @@ const titleSlide = ({ka, jared}) => (
   </Slide>
 )
 
-export default ({ka, jared}) => [
+export default ({ka, jared, chart}) => [
   titleSlide({ka, jared}),
 
   <Slide>
-      <Heading size={2} style={{marginBottom: 30}}>Observables / Rx</Heading>
-      <Heading fit size={2} margin="0 0 30px">Communicating Sequential Processes</Heading>
-      <Heading size={2} style={{marginBottom: 30}}>Promises / async+await</Heading>
       <Heading size={2} style={{marginBottom: 30}}>Callbacks</Heading>
+      <Heading size={2} style={{marginBottom: 30}}>Promises / async+await</Heading>
+      <Heading size={2} style={{marginBottom: 30}}>Observables / Rx</Heading>
+      <Heading fit size={2} margin="10px 0">Communicating Sequential Processes</Heading>
   </Slide>,
 
   <Slide>
@@ -384,16 +383,42 @@ window.close()
     <Heading size={3} textFont="primary">
       Feature Comparison
     </Heading>
-    {makeTable(featureTable)}
+    {makeTable(featureTable, true)}
   </Slide>,
 
   <Slide style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}} notes={tableNotes(feature2)}>
     <Heading size={3} textFont="primary">
       Feature Comparison, part 2
     </Heading>
-    {makeTable(feature2)}
+    {makeTable(feature2, true)}
   </Slide>,
 
+  <Slide style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}} notes={tableNotes(featureTable)}>
+    <Heading size={3} textFont="primary">
+      How bout converting?
+    </Heading>
+    <Heading size={5} textFont="primary" textColor="white" margin="30px 0">
+      interop from {"{top}"} to {"{left}"}
+    </Heading>
+    {/*makeTable(interopTable, false)*/}
+  </Slide>,
+
+  ...require('./interop').default,
+
+  ...require('./proscons').default,
+
+  <Slide>
+    <Image width="1000px" src={chart} />
+  </Slide>,
+
+  <Slide >
+    <Title fit>Things I wish were different</Title>
+    <List>
+      <ListItem>Observables: Better introspection</ListItem>
+      <ListItem>CSP: Cancellation, private put</ListItem>
+      <ListItem>Promises: {"don't eat my errors"}</ListItem>
+    </List>
+  </Slide>,
 ]
 
 export const others = () => [
