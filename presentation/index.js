@@ -37,9 +37,9 @@ require("spectacle/lib/themes/default/index.css");
 
 
 const images = {
-  jared: require("../assets/jared.png"),
-  ka: require("../assets/ka.png"),
-  chart: require("../assets/chart.png"),
+  jared: require("../assets/jared.png").replace(/^\//, ''),
+  ka: require("../assets/ka.png").replace(/^\//, ''),
+  chart: require("../assets/chart.png").replace(/^\//, ''),
 };
 
 preloader(images);
