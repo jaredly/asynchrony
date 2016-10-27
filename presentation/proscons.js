@@ -82,6 +82,8 @@ export default [
 after reading about CycleJS that Andre was developing, and I built a tool
 to try to "visualize the stream" - and it had some cool qualities, but I ran
 into some nontrivial problems, and I didn't end up pursuing it much farther.
+(now tomorrow, Andre is going to talk about visualizing dataflow w/ Rx, so
+maybe he's got the tool I want :D)
 But this is still a huge issue, especially in combination with the next thing,
 where I say it can be "hard to reason about"
 - > now this term gets used a lot, and I want to dig into it a little big.
@@ -95,7 +97,7 @@ where I say it can be "hard to reason about"
             Lots of complex operators
           </ListItem>
           <ListItem>
-            Works w/ may values
+            Works w/ many values
           </ListItem>
           <ListItem>
             Thinking at a higher level (stream)
@@ -108,6 +110,9 @@ where I say it can be "hard to reason about"
           </ListItem>
           <ListItem>
             Poor debuggability
+          </ListItem>
+          <ListItem>
+            Coordination/ordering can bite you
           </ListItem>
           <ListItem>
             Can be hard to reason about
@@ -127,6 +132,44 @@ where I say it can be "hard to reason about"
         How much effort required to get familiar with the library?
       </ListItem></Appear>
     </List>
+  </Slide>,
+
+  <Slide notes={`A year and a half ago, I got really excited about Observables,
+after reading about CycleJS that Andre was developing, and I built a tool
+to try to "visualize the stream" - and it had some cool qualities, but I ran
+into some nontrivial problems, and I didn't end up pursuing it much farther.
+But this is still a huge issue, especially in combination with the next thing,
+where I say it can be "hard to reason about"
+- > now this term gets used a lot, and I want to dig into it a little big.
+  to me "easy to reason about" means "
+`}>
+    <Title fit>Communicating Sequential Processes</Title>
+      <div style={{textAlign: 'left', marginTop: 40,}}>
+        <strong>Pros</strong>
+        <List>
+          <ListItem>
+            You control when data is processed
+          </ListItem>
+          <ListItem>
+            Works w/ many values
+          </ListItem>
+          <ListItem>
+            {"Sequential is what we're used to"}
+          </ListItem>
+        </List>
+        <strong>Cons</strong>
+        <List>
+          <ListItem>
+            No built-in cancellation
+          </ListItem>
+          <ListItem>
+            No first-class error support
+          </ListItem>
+          <ListItem>
+            ???
+          </ListItem>
+        </List>
+    </div>
   </Slide>,
 
 ]

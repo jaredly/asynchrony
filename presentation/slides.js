@@ -272,6 +272,34 @@ const makeTable = (data, appear) => (
   </Table>
 )
 
+const footer = ({ka, jared}) => [
+    <Link href="https://jaredforsyth.com/asynchrony">
+      <Text textColor="tertiary" style={{marginBottom: 30}}>
+        jaredforsyth.com/asynchrony
+      </Text>
+    </Link>,
+
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
+      <Text bold margin="0 0 0px" style={{
+        alignItems: 'center',
+        display: 'flex',
+        flexDirection: 'row',
+        alignSelf: 'center',
+      }}>
+        Jared Forsyth
+        <Image src={jared} height={75} style={{
+          borderRadius: 50,
+          marginLeft: 20,
+        }}/>
+      </Text>
+    </div>,
+
+    <Image src={ka} height={65}/>
+]
+
 const titleSlide = ({ka, jared}) => (
   <Slide bgColor="primary">
     <Heading size={2} lineHeight={1} textColor="black">
@@ -286,29 +314,7 @@ const titleSlide = ({ka, jared}) => (
     <Text bold size={4} textFont="primary" textColor="white" margin="0 0 20px">
       core.async, and callbacks!
     </Text>
-    <Link href="https://jaredforsyth.com/asynchrony">
-      <Text textColor="tertiary" style={{marginBottom: 30}}>
-        jaredforsyth.com/asynchrony
-      </Text>
-    </Link>
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-    }}>
-    <Text bold margin="0 0 0px" style={{
-      alignItems: 'center',
-      display: 'flex',
-      flexDirection: 'row',
-      alignSelf: 'center',
-    }}>
-      Jared Forsyth
-      <Image src={jared} height={75} style={{
-        borderRadius: 50,
-        marginLeft: 20,
-      }}/>
-    </Text>
-    </div>
-    <Image src={ka} height={65}/>
+    {footer({ka, jared})}
   </Slide>
 )
 
@@ -393,32 +399,33 @@ window.close()
     {makeTable(feature2, true)}
   </Slide>,
 
-  <Slide style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}} notes={tableNotes(featureTable)}>
+  <Slide notes={tableNotes(featureTable)}>
     <Heading size={3} textFont="primary">
       How bout converting?
     </Heading>
-    <Heading size={5} textFont="primary" textColor="white" margin="30px 0">
+    {/*<Heading size={5} textFont="primary" textColor="white" margin="30px 0">
       interop from {"{top}"} to {"{left}"}
     </Heading>
-    {/*makeTable(interopTable, false)*/}
+    makeTable(interopTable, false)*/}
   </Slide>,
 
   ...require('./interop').default,
 
   ...require('./proscons').default,
 
-  <Slide>
+  <Slide notes={`
+So there are a bunch of places in our current iOS codebase, that
+where we're currently using Observables and we've decided that it's actually
+*too* powerful of a construct. So we've talked recently about replacing those
+with simple callbacks.
+`}>
     <Image width="1000px" src={chart} />
   </Slide>,
 
-  <Slide >
-    <Title fit>Things I wish were different</Title>
-    <List>
-      <ListItem>Observables: Better introspection</ListItem>
-      <ListItem>CSP: Cancellation, private put</ListItem>
-      <ListItem>Promises: {"don't eat my errors"}</ListItem>
-    </List>
-  </Slide>,
+  <Slide>
+    <Title>FIN</Title>
+    {footer({ka, jared})}
+  </Slide>
 ]
 
 export const others = () => [
